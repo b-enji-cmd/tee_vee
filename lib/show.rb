@@ -16,4 +16,8 @@ class Show
   def highest_paid_actor
     @characters.max_by(&:salary).actor
   end
+
+  def actors
+    @characters.map(&:actor)
+  end
 end
