@@ -20,10 +20,29 @@ class Network
   end
 
   def actors_by_show
-    breakdown = Hash.new { |h, k| h[k] = [] }
+    show_breakdown = Hash.new { |h, k| h[k] = [] }
     @shows.each do |show|
-      breakdown[show] = show.actors
+      show_breakdown[show] = show.actors
     end
-    breakdown
+    show_breakdown
+  end
+
+  def shows_by_actor
+    actor_breakdown = Hash.new { |h, k| h[k] = [] }
+
+    @shows.map do |show|
+      test = show
+      show.characters.map do |character|
+        actor_breakdown[character.actor] << test if test.actors.include?(character.actor)
+      end
+    end
+    actor_breakdown
+  end
+
+  def prolific_actors
+    actors = shows_by_actor
+    actors.keys.find_all do |actor|
+      actors[actor].length > 1
+    end
   end
 end
